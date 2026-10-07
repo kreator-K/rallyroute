@@ -63,10 +63,18 @@ Official authority feeds     Venue / operator notices     Community reports
 
 ### Optional: Google Maps backdrop
 
+**For the hackathon demo (quickest):**
+
+1. Open [Google Maps Demo Key](https://developers.google.com/maps/documentation/javascript/demo-key) and follow Google's current sign-in and key-creation flow.
+2. Return to RallyRoute, select **Connect Google Maps**, paste the issued key, and confirm.
+3. If the Google map doesn't load, follow Google's guidance on allowed domains and API restrictions, or continue with the fallback schematic.
+
+**For a production-capable Google Cloud project:**
+
 1. Create a Google Cloud project and enable **Maps JavaScript API**.
-2. Configure Google Maps Platform billing if required.
-3. Create an API key, restrict it to **Maps JavaScript API**, and restrict HTTP referrers to the web origins you control.
-4. Serve the app through HTTPS. Choose **Connect Google Maps** in the UI and supply the key when prompted.
+2. Set up billing, budgets, and usage limits as required.
+3. Create a Maps JavaScript API key and restrict it to authorized HTTPS websites (for GitHub Pages use `https://kreator-k.github.io/*`) and the Maps JavaScript API.
+4. Open RallyRoute from your hosted HTTPS URL, select **Connect Google Maps**, and enter your browser-restricted key.
 
 The key is used for that browser session, not saved in the app's storage. Never commit an unrestricted key to this repository. See [Google Maps API key guidance](https://developers.google.com/maps/documentation/javascript/get-api-key) and [Maps URLs](https://developers.google.com/maps/documentation/urls/guide).
 
