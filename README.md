@@ -7,7 +7,7 @@ RallyRoute is a **zero-download, mobile-friendly hackathon prototype** for fans 
 > [!WARNING]
 > **Demonstration only — not a live navigation or emergency service.** All event alerts, closure reports, source references, crowd information, route risks, and map detours are simulated. Never use these results to make real travel or safety decisions.
 
-![RallyRoute product preview](preview.png)
+**Launch the demo:** Open [`index.html`](index.html) locally or deploy this repository with GitHub Pages. Screenshots are available in the downloadable hackathon project package.
 
 ## Try it in one minute
 
@@ -39,12 +39,6 @@ Visit `http://localhost:8000`. The QR code remains disabled on localhost because
 | Google Maps handoff | Opens a real Google Maps Directions URL for the selected origin, destination and mode |
 | Optional Google Maps backdrop | Loads Google Maps JavaScript API when a user supplies their own restricted API key |
 | Distribution kit | Partner landing experience and QR poster on a hosted HTTPS site |
-
-### Traveler and mobile experiences
-
-| Desktop | Mobile |
-| --- | --- |
-| ![Desktop screenshot](screenshot_desktop.png) | ![Mobile screenshot](screenshot_mobile.png) |
 
 ## Architecture and important boundaries
 
@@ -99,7 +93,7 @@ python3 -m playwright install chromium
 python3 test_regression.py
 ```
 
-The test script exercises simulated route changes, incident filtering and triage, community-report safeguards, Maps handoff URL generation, QR generation, and mobile layout. It saves fresh desktop/mobile screenshots.
+The test script exercises simulated route changes, incident filtering and triage, community-report safeguards, Maps handoff URL generation, QR generation, and mobile layout. Screenshots can be captured locally with a browser.
 
 ## Project structure
 
@@ -109,10 +103,6 @@ The test script exercises simulated route changes, incident filtering and triage
 ├── README.md               # Project guide
 ├── DEMO_PITCH.md           # Two-minute judge walkthrough
 ├── QR_LICENSE.md           # Bundled third-party QR code attribution
-├── preview.png             # Product preview
-├── screenshot_desktop.png  # Desktop capture
-├── screenshot_mobile.png   # Mobile capture
-├── build_qr.py             # QR encoder build helper
 ├── test_regression.py      # Automated browser regression checks
 ├── requirements-dev.txt    # Browser-test dependency
 └── .gitignore
