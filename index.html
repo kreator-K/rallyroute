@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#102a25"><meta name="description" content="RallyRoute — event-aware disruption intelligence and navigation handoff.">
+<title>RallyRoute — Get there through the chaos</title>
+<style>
+:root{--ink:#122a27;--muted:#6f827d;--pale:#f4f5f0;--line:#e1e7e0;--green:#144d3f;--acid:#d9fe87;--orange:#eb8e52;--red:#c84e4c;--blue:#4e76ac;--shadow:0 10px 42px rgba(13,41,31,.065)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{background:var(--pale);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;margin:0;font-size:14px;line-height:1.45}button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.48;cursor:not-allowed}a{color:inherit}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #99d38e;outline-offset:2px}.wrap{max-width:1470px;margin:auto;padding:0 30px}
+.topbar{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:15}.topinner{min-height:76px;display:flex;align-items:center;gap:20px}.logo{display:flex;align-items:center;gap:10px;white-space:nowrap;text-decoration:none}.logo-mark{width:38px;height:38px;background:var(--ink);color:var(--acid);display:grid;place-items:center;border-radius:12px;transform:rotate(-7deg);font-size:23px;font-weight:900}.logo-mark span{transform:rotate(7deg)}.logo b{font-size:20px;letter-spacing:-1.15px;font-weight:890}.top-tabs{display:flex;align-items:center;gap:4px;margin:auto;background:#f0f3ee;padding:5px;border-radius:11px}.tab{border:0;background:transparent;color:#758881;font-size:12px;padding:10px 15px;border-radius:8px;font-weight:760}.tab.active{background:#fff;color:var(--ink);box-shadow:0 2px 9px #152c1f0d}.top-right{display:flex;align-items:center;gap:9px}.tag{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:100px;padding:7px 10px;font-size:10px;font-weight:850;letter-spacing:.02em;white-space:nowrap}.tag.dot::before{content:"";width:6px;height:6px;border-radius:50%;background:#e58a57}.action{border-radius:10px;border:1px solid #ccd9ce;background:white;padding:11px 15px;font-weight:800;font-size:12px;color:var(--ink);transition:transform .12s}.action:hover{transform:translateY(-1px)}.action.dark{background:var(--ink);color:#fff;border-color:var(--ink)}.action.lime{background:var(--acid);border-color:var(--acid);color:#19352e}.action.ghost{border:0;background:transparent}.action.sm{padding:7px 11px;font-size:11px}
+.hero{background:#102b27;color:#fff;position:relative;overflow:hidden}.hero:after{content:"";position:absolute;width:400px;height:400px;right:-115px;top:-280px;border:95px solid rgba(218,251,135,.1);border-radius:50%;pointer-events:none}.hero-inner{display:grid;grid-template-columns:1fr auto;gap:25px;align-items:center;padding-top:32px;padding-bottom:33px;position:relative;z-index:1}.eyebrow{font-size:10px;letter-spacing:2.2px;font-weight:900;text-transform:uppercase;color:#badfbb}.hero h1{font-size:clamp(27px,3vw,42px);line-height:1.1;letter-spacing:-1.8px;margin:11px 0 11px;max-width:740px}.hero h1 em{font-style:normal;color:var(--acid)}.hero p{color:#b7cac1;font-size:13px;line-height:1.7;max-width:660px;margin:0}.event-panel{background:#23423a;border:1px solid #406357;border-radius:15px;padding:17px;min-width:225px}.event-panel small{font-size:10px;color:#a4bdad;text-transform:uppercase;letter-spacing:1.3px;font-weight:800}.event-panel strong{display:block;font-size:19px;letter-spacing:-.5px;margin-top:8px}.event-panel .event-sub{font-size:11px;color:#c2d0c2;margin-top:7px}.event-chip{display:inline-block;background:#375c48;color:#d9f8c8;border-radius:8px;padding:5px 8px;font-size:9px;font-weight:800;margin-top:13px}
+.main{padding-top:22px;padding-bottom:45px}.notice{background:#fff9ee;border:1px solid #efdfba;color:#705a31;border-radius:12px;padding:12px 15px;display:flex;align-items:center;gap:10px;font-size:12px;margin-bottom:17px}.notice svg{flex-shrink:0}.app-grid{display:grid;grid-template-columns:minmax(0,1.57fr) minmax(305px,1fr);gap:17px}.panel{background:white;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);min-width:0;overflow:hidden}.panel-padding{padding:20px}.section-hd{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:13px}.section-hd h2{font-size:17px;letter-spacing:-.5px;margin:0;font-weight:850}.section-hd .hint{font-size:10px;color:var(--muted)}.mini-tag{font-size:10px;background:#edf2ef;color:#4f6a59;border-radius:20px;padding:5px 9px;font-weight:800}.separator{border:0;border-top:1px solid var(--line);margin:18px 0}.map-toolbar{padding:16px 19px 13px}.controlrow{display:flex;align-items:center;justify-content:space-between;gap:9px;flex-wrap:wrap}.filtergroup{display:flex;background:#f2f5f1;padding:3px;border-radius:10px;gap:2px}.filtergroup button{padding:7px 10px;font-size:10px;color:#7a8b7d;font-weight:800;border:0;border-radius:7px;background:transparent}.filtergroup button.active{background:white;color:var(--ink);box-shadow:0 1px 5px #152d1f12}.mapswitch{font-size:11px;font-weight:800;color:#477059;display:flex;gap:7px;align-items:center;border:0;background:transparent}
+.map-wrap{height:455px;position:relative;background:#eff0e8;overflow:hidden}.map-graphic{width:100%;height:100%;display:block}.map-graphic .streets{stroke:#fff;stroke-width:20;stroke-linecap:round}.map-graphic .street-outline{stroke:#dfe2d8;stroke-width:23;stroke-linecap:round}.map-graphic .road-name{fill:#7a8a7c;font-size:11px;font-weight:800}.map-graphic .block{fill:#e3e9df}.map-graphic .park{fill:#caddc9}.map-graphic .route-back{stroke:#fff;stroke-width:11;stroke-linejoin:round;stroke-linecap:round;fill:none}.map-graphic .route{stroke:#247456;stroke-width:6;stroke-linejoin:round;stroke-linecap:round;fill:none}.map-graphic .closure{stroke:#ca574a;stroke-width:10;stroke-linecap:round}.map-graphic .marker-text{font-size:11px;font-weight:900}.map-graphic [data-pin]{cursor:pointer}.map-watermark{position:absolute;right:11px;bottom:9px;padding:5px 8px;background:#ffffffd9;color:#667b6d;font-size:9px;border-radius:6px;font-weight:800;pointer-events:none}.map-loading{position:absolute;left:11px;top:11px;background:#fff;padding:8px 10px;border-radius:8px;font-size:11px;box-shadow:0 4px 15px #0001;z-index:3}.map-google{position:absolute;inset:0;display:none}.map-google.show{display:block}.map-legend{display:flex;gap:17px;flex-wrap:wrap;border-top:1px solid var(--line);padding:11px 18px;color:#75857b;font-size:10px;font-weight:750}.legend{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}.legend.red{background:var(--red)}.legend.orange{background:var(--orange)}.legend.green{background:#367f60}
+.incidents{margin-top:17px}.inc-list{display:grid;grid-template-columns:1fr 1fr;gap:10px}.incident{display:block;text-align:left;border:1px solid var(--line);border-radius:11px;padding:12px;background:#fff;min-width:0;transition:.12s}.incident:hover,.incident.selected{border-color:#519578;background:#f7fbf7}.inc-top{display:flex;align-items:center;justify-content:space-between;gap:8px}.severity{font-size:9px;padding:4px 7px;font-weight:850;border-radius:6px;background:#fff0e7;color:#aa6c3a}.severity.verified{background:#fcebe8;color:#ac4a45}.severity.corroborated{background:#e8f1fc;color:#496e9b}.severity.resolved{background:#eef2ef;color:#708376}.incident h3{font-size:12px;line-height:1.35;margin:8px 0 4px}.incident p{font-size:10px;color:#859289;margin:0;line-height:1.5}.inc-detail{margin-top:10px;background:#f6f8f4;border-radius:11px;padding:12px;font-size:11px;color:#5f7166;line-height:1.6}.inc-detail b{color:var(--ink)}.inc-detail .source-line{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:10px;font-size:10px}
+.journey-form{display:flex;flex-direction:column;gap:10px}.field-label{text-transform:uppercase;letter-spacing:.85px;color:#71867a;font-size:9px;font-weight:900}.field-card{padding:10px 12px;border:1px solid #dae3d8;border-radius:10px;display:flex;align-items:center;gap:9px;font-size:12px}.field-card .pin{width:9px;height:9px;border:2px solid #2b8f67;border-radius:50%;flex-shrink:0}.field-card select{border:0;outline:none;background:transparent;width:100%;font-weight:800;color:var(--ink);padding:2px;min-width:0}.field-card strong{font-size:12px}.mode-group{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:3px}.mode-group button{border:1px solid var(--line);background:white;border-radius:9px;padding:10px 4px;font-weight:800;color:#6c8574;font-size:11px}.mode-group button.active{border-color:#40846a;background:#eaf5e8;color:#1c614a}.recommend{padding:14px;background:#f1f7ef;border:1px solid #d3e6ce;border-radius:11px;margin:13px 0}.recommend .kicker{color:#4f8563;font-size:10px;font-weight:900;letter-spacing:1px}.recommend strong{display:block;font-size:15px;margin:5px 0}.recommend p{font-size:11px;color:#5f7666;margin:4px 0;line-height:1.6}.route-summary{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:13px 0}.route-stat{border:1px solid var(--line);border-radius:10px;padding:10px}.route-stat span{font-size:9px;text-transform:uppercase;letter-spacing:.4px;color:#84948a;font-weight:800}.route-stat strong{display:block;font-size:16px;margin-top:3px}.travel-note{font-size:10px;line-height:1.65;color:#819389;margin:10px 0}.flexcol{display:flex;flex-direction:column;gap:9px}.full{width:100%}.cta-arrow{float:right}.small-banner{display:flex;gap:10px;align-items:flex-start;background:#f9f8f1;border-radius:10px;padding:12px;margin-top:11px;color:#726d56;font-size:10px;line-height:1.6}
+.bottom-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:17px;margin-top:17px}.report-form{display:grid;grid-template-columns:1fr 1fr;gap:10px}.control{display:flex;flex-direction:column;gap:6px}.control input,.control select,.control textarea{width:100%;border:1px solid #d7e1d7;background:#fff;border-radius:9px;padding:10px 11px;font-size:12px;color:#244433;outline:none}.control textarea{min-height:76px;resize:vertical}.span2{grid-column:1/-1}.report-disclaimer{font-size:10px;color:#7c9282;line-height:1.6;margin-top:8px}.report-confirm{background:#edf8ef;border:1px solid #cae3cb;padding:10px;margin-top:10px;border-radius:9px;color:#3c774c;font-size:11px;display:none}.step-list{display:flex;flex-direction:column;gap:14px}.step{display:flex;gap:11px;align-items:flex-start}.step-n{background:#e9f3e7;width:27px;height:27px;flex-shrink:0;border-radius:8px;display:grid;place-items:center;font-size:12px;font-weight:850;color:#3d8255}.step strong{font-size:12px}.step p{font-size:11px;color:#819286;margin:4px 0 0;line-height:1.6}
+.desk-grid{display:grid;grid-template-columns:1.3fr .7fr;gap:17px}.ops-card{display:flex;gap:11px;align-items:start;border:1px solid var(--line);padding:13px;border-radius:11px;margin-bottom:9px;background:white}.ops-card .ops-dot{flex-shrink:0;border-radius:9px;width:29px;height:29px;background:#f5e8e4;display:grid;place-items:center;color:#b56d45;font-weight:900}.ops-card h3{margin:0;font-size:12px}.ops-card p{margin:5px 0 0;font-size:11px;color:#809186;line-height:1.6}.ops-card .ops-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.ops-sim{border:1px dashed #c3d8c4;background:#f5fbf3;padding:14px;border-radius:10px;color:#47684c;font-size:11px;line-height:1.65}.ops-feed{max-height:570px;overflow-y:auto}.admin-stat{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.admin-stat>div{border:1px solid var(--line);padding:15px;border-radius:10px}.admin-stat b{font-size:23px;display:block}.admin-stat small{font-size:10px;color:#849589}.admin-panel .action{margin-top:9px}.share-grid{display:grid;grid-template-columns:1fr 1fr;gap:17px}.poster{max-width:500px;margin:auto;border-radius:18px;overflow:hidden;background:#173b32;color:#fff;padding:35px 30px;min-height:500px;display:flex;flex-direction:column;justify-content:space-between}.poster-head{font-weight:900;font-size:16px;letter-spacing:-.8px}.poster h2{font-size:43px;letter-spacing:-2px;line-height:1.05;margin:30px 0 11px}.poster h2 em{font-style:normal;color:var(--acid)}.poster p{font-size:14px;line-height:1.6;color:#b5cfc0}.poster-qr{background:#fff;color:#233a31;padding:13px;border-radius:13px;display:flex;gap:15px;align-items:center}.qr-render{width:120px;height:120px;display:grid;place-items:center;background:white}.qr-render svg{width:100%;height:100%}.poster small{font-size:10px;color:#cde3d2}.copyline{display:flex;gap:7px;margin:12px 0;min-width:0}.copyline input{min-width:0;flex:1;border:1px solid var(--line);background:#f7faf5;padding:11px;border-radius:9px;font-size:11px}.ready-warn{font-size:11px;color:#a96c3b;background:#fff5e8;border:1px solid #efdcb6;border-radius:10px;padding:12px;line-height:1.6}.foot{margin-top:20px;padding:16px 0 25px;color:#9aaba0;font-size:11px;text-align:center}.foot a{color:#527e5c}.hide{display:none!important}.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#17382e;color:#fff;font-size:12px;padding:12px 18px;border-radius:10px;box-shadow:0 8px 30px #0003;z-index:50;opacity:0;pointer-events:none;transition:opacity .2s}.toast.show{opacity:1}
+@media(max-width:1020px){.wrap{padding-left:17px;padding-right:17px}.hero-inner{grid-template-columns:1fr}.event-panel{display:none}.app-grid{grid-template-columns:1fr}.bottom-grid{grid-template-columns:1fr}.map-wrap{height:440px}.top-tabs{margin-left:auto;margin-right:0}.tag.dot{display:none}}
+@media(max-width:650px){.topinner{min-height:67px;gap:9px;flex-wrap:wrap;padding-top:9px;padding-bottom:9px}.logo b{font-size:18px}.logo-mark{width:32px;height:32px;font-size:20px}.top-tabs{order:3;width:100%;justify-content:stretch}.tab{flex:1;padding:8px 5px;font-size:10px}.top-right{margin-left:auto}.top-right .action{padding:8px 10px}.hero-inner{padding-top:23px;padding-bottom:25px}.hero h1{font-size:32px;letter-spacing:-1.5px}.hero p{font-size:12px}.panel-padding{padding:15px}.map-wrap{height:340px}.inc-list,.share-grid,.desk-grid{grid-template-columns:1fr}.mode-group button{font-size:10px}.poster{min-height:450px}.poster h2{font-size:38px}.report-form{grid-template-columns:1fr}.span2{grid-column:auto}}
+@media print{.topbar,.hero,.notice,.foot{display:none!important}body{background:#fff}.main{padding:0;max-width:none}#view-travel,#view-ops{display:none!important}#view-share{display:block!important}#view-share .share-grid{display:block!important}#view-share .share-grid>.panel{display:none!important}#view-share .share-grid>.panel:first-child{display:block!important;border:0;box-shadow:none;padding:0}#view-share .share-grid>.panel:first-child>.section-hd,#view-share .share-grid>.panel:first-child>p{display:none!important}.poster{border-radius:0;max-width:none;min-height:95vh}}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="wrap topinner"><a class="logo" href="#home" aria-label="RallyRoute home"><span class="logo-mark"><span>↗</span></span><b>RallyRoute<span style="color:#6c967b">.</span></b></a>
+<div class="top-tabs" role="tablist" aria-label="Experience"><button class="tab active" data-view="travel" aria-selected="true">Traveler view</button><button class="tab" data-view="ops" aria-selected="false">Incident desk</button><button class="tab" data-view="share" aria-selected="false">Distribution kit</button></div>
+<div class="top-right"><span class="tag dot">SIMULATED EVENT</span><button class="action dark sm" id="share-top">↗ Share event</button></div></div></div>
+<div class="hero"><div class="wrap hero-inner"><div><div class="eyebrow">Event intelligence / Manhattan / Hackathon prototype</div><h1>The city can celebrate. <em>Your journey shouldn't be chaos.</em></h1><p>One link. Verified disruption intelligence. Better-informed decisions before you step into the crowd. Use Google Maps for your actual directions.</p></div><div class="event-panel"><small>Active scenario</small><strong>Knicks victory night</strong><div class="event-sub">Midtown Manhattan · Fictional scenario</div><span class="event-chip">● Demo control room active</span></div></div></div>
+<main class="wrap main" id="home">
+<div class="notice"><span style="font-size:16px">ⓘ</span><span><b>DEMO MODE.</b> All closures, crowds, sources, and route-risk indicators are invented for this scenario, not real-time NYC information. Do not use them for travel or safety decisions.</span></div>
+<section id="view-travel">
+<div class="app-grid">
+<div>
+ <div class="panel"><div class="map-toolbar"><div class="section-hd"><h2>What's happening around you</h2><span class="mini-tag" id="mapstatus">◉ Schematic map</span></div><div class="controlrow"><div class="filtergroup"><button data-filter="all" class="active">All reports</button><button data-filter="verified">Official only</button><button data-filter="community">Community</button></div><button class="mapswitch" id="map-connect">⚙ Connect Google Maps</button></div></div>
+ <div class="map-wrap" id="map-wrap"><svg class="map-graphic" viewBox="0 0 620 460" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Schematic map of Midtown Manhattan with hypothetical incidents and a route simulation" id="street-svg">
+ <rect width="620" height="460" fill="#ecf1e9"/>
+ <rect class="park" x="475" y="15" width="115" height="72" rx="11"/><text x="486" y="49" font-size="11" fill="#74997b" font-weight="800">BRYANT PARK</text>
+ <g fill="#dfe8de" stroke="#d7e2d7" stroke-width="1"><rect x="120" y="82" width="95" height="28" rx="3"/><rect x="228" y="82" width="95" height="28" rx="3"/><rect x="340" y="82" width="95" height="28" rx="3"/><rect x="120" y="140" width="95" height="28" rx="3"/><rect x="228" y="140" width="95" height="28" rx="3"/><rect x="340" y="140" width="95" height="28" rx="3"/><rect x="120" y="198" width="95" height="28" rx="3"/><rect x="228" y="198" width="95" height="28" rx="3"/><rect x="340" y="198" width="95" height="28" rx="3"/><rect x="120" y="257" width="95" height="28" rx="3"/><rect x="228" y="257" width="95" height="28" rx="3"/><rect x="340" y="257" width="95" height="28" rx="3"/><rect x="120" y="314" width="95" height="28" rx="3"/><rect x="228" y="314" width="95" height="28" rx="3"/><rect x="340" y="314" width="95" height="28" rx="3"/><rect x="120" y="372" width="95" height="28" rx="3"/><rect x="228" y="372" width="95" height="28" rx="3"/><rect x="340" y="372" width="95" height="28" rx="3"/></g>
+ <g class="street-outline"><path d="M110 0V460M220 0V460M330 0V460M440 0V460"/><path d="M0 60H620M0 118H620M0 176H620M0 234H620M0 292H620M0 350H620M0 408H620"/></g><g class="streets"><path d="M110 0V460M220 0V460M330 0V460M440 0V460"/><path d="M0 60H620M0 118H620M0 176H620M0 234H620M0 292H620M0 350H620M0 408H620"/></g>
+ <g class="road-name"><text x="81" y="17">9TH AVE</text><text x="191" y="17">8TH AVE</text><text x="300" y="17">7TH AVE</text><text x="412" y="17">6TH AVE</text><text x="15" y="52">W 42ND ST</text><text x="15" y="110">W 40TH ST</text><text x="15" y="168">W 38TH ST</text><text x="15" y="226">W 36TH ST</text><text x="15" y="284">W 34TH ST</text><text x="15" y="342">W 32ND ST</text><text x="15" y="400">W 30TH ST</text></g>
+ <rect x="236" y="299" width="74" height="39" rx="5" fill="#c4d7c6"/><text x="242" y="315" fill="#59795d" font-size="9" font-weight="850">MADISON SQ</text><text x="244" y="327" fill="#59795d" font-size="9" font-weight="850">GARDEN</text>
+ <g id="route-layer"></g><g id="incident-layer"></g><g id="destination-layer"></g>
+ </svg><div id="gmap" class="map-google"></div><span class="map-watermark" id="watermark">Illustrative street grid · Not precise geography</span></div>
+ <div class="map-legend"><span><i class="legend red"></i>Official alert (demo)</span><span><i class="legend orange"></i>Community report</span><span><i class="legend green"></i>Illustrative alternative</span></div></div>
+ <div class="incidents"><div class="section-hd"><h2>Disruption intelligence</h2><span class="hint" id="feed-count">4 scenario reports</span></div><div class="inc-list" id="incident-list"></div><div class="inc-detail" id="incident-detail" aria-live="polite">Select an incident for its source and verification status.</div></div>
+</div>
+<div>
+ <div class="panel panel-padding"><div class="section-hd"><h2>Your route out</h2><span class="mini-tag">No download</span></div><div class="journey-form"><div class="field-label">Leaving from</div><div class="field-card"><span class="pin"></span><strong>Madison Square Garden, NYC</strong></div><div class="field-label">Where do you need to get to?</div><div class="field-card"><span style="color:#6c8b81">◎</span><select id="destination" aria-label="Destination"><option value="port">Port Authority Bus Terminal</option><option value="herald">34 St–Herald Square station</option><option value="penn">Penn Station · 8th Ave entrance</option><option value="bryant">Bryant Park</option></select></div><div class="field-label">Preferred mode</div><div class="mode-group"><button class="active" data-mode="walking">↗ Walk</button><button data-mode="transit">▣ Transit</button><button data-mode="driving">▰ Car</button></div></div>
+ <div class="recommend" id="route-advice" aria-live="polite"></div><div class="route-summary"><div class="route-stat"><span>Scenario risk</span><strong id="risk-stat">—</strong></div><div class="route-stat"><span>Suggested next step</span><strong id="next-stat" style="font-size:12px;line-height:1.5">—</strong></div></div>
+ <button class="action dark full" id="open-maps">Open destination in Google Maps <span class="cta-arrow">↗</span></button>
+ <p class="travel-note"><b>Before you go:</b> Google Maps calculates its own live route. Custom RallyRoute closures and detours are not automatically transferred or enforced in Google Maps. Always follow official instructions.</p>
+ <hr class="separator"><div class="section-hd"><h2>Stay ahead of changes</h2><span class="mini-tag">Demo</span></div><p style="color:#7f9185;font-size:11px;line-height:1.7;margin-top:0">Get a visible in-page advisory when new mock incident data changes your journey's risk.</p><button class="action full" id="simulate-new">⚡ Simulate new road closure</button><div id="alert-box" class="small-banner"><span>◈</span><span>Demo monitoring active in this tab. There are no background push notifications or live feeds.</span></div>
+ </div>
+ <div class="panel panel-padding" style="margin-top:17px"><div class="section-hd"><h2>Report what you see</h2><span class="mini-tag">Community</span></div><form class="report-form" id="report-form"><div class="control"><label class="field-label" for="rep-location">Location</label><select id="rep-location"><option value="w34">W 34th St at 7th Ave</option><option value="w36">W 36th St at 8th Ave</option><option value="w32">W 32nd St at 8th Ave</option><option value="w40">W 40th St at 8th Ave</option></select></div><div class="control"><label class="field-label" for="rep-type">Report type</label><select id="rep-type"><option>Heavy crowd</option><option>Possible obstruction</option><option>Station access issue</option><option>Transit delay report</option></select></div><div class="control span2"><label class="field-label" for="rep-detail">What did you observe?</label><textarea id="rep-detail" maxlength="220" placeholder="Describe what you actually saw (no personal information)…" required></textarea></div><button type="submit" class="action dark span2">Submit unverified report ↗</button></form><div class="report-confirm" id="report-confirm"></div><div class="report-disclaimer">Reports stay in this browser's demo session. They do not notify authorities, close roads, or update other users.</div></div>
+</div></div>
+<div class="bottom-grid"><div class="panel panel-padding"><div class="section-hd"><h2>How it knows what to trust</h2><span class="mini-tag">Evidence-first</span></div><div class="step-list"><div class="step"><span class="step-n">01</span><div><strong>Official feeds establish confirmed restrictions</strong><p>A government or transit authority reference is required before labeling a real street closure confirmed.</p></div></div><div class="step"><span class="step-n">02</span><div><strong>Public reports flag emerging changes</strong><p>Unverified observations appear as signals, not legal road-closure facts.</p></div></div><div class="step"><span class="step-n">03</span><div><strong>Incident information shapes the next decision</strong><p>Avoid known closures in the illustrative map and select an alternative area before handing off to live navigation.</p></div></div></div></div><div class="panel panel-padding"><div class="section-hd"><h2>The product, not another map</h2></div><div style="font-size:12px;color:#647c6e;line-height:1.9"><b style="color:#1c4634">Google Maps</b> supplies familiar navigation and directions.<br><b style="color:#1c4634">RallyRoute</b> supplies event-specific warnings, provenance, situational context, and venue distribution.<br><b style="color:#1c4634">The organizer</b> supplies a trusted discovery channel: a QR code, SMS, venue sign, or ticket link.</div><button class="action full" style="margin-top:15px" data-go="share">See zero-download distribution →</button></div></div>
+</section>
+<section id="view-ops" class="hide"><div class="section-hd"><h2>Incident operations desk</h2><span class="mini-tag">Local simulation only</span></div><div class="desk-grid"><div class="panel panel-padding"><div class="section-hd"><h2>Incoming evidence queue</h2><span class="hint">Source provenance + disposition</span></div><div id="ops-feed" class="ops-feed"></div></div><div><div class="panel panel-padding admin-panel"><div class="section-hd"><h2>Scenario health</h2></div><div class="admin-stat" id="ops-stats"></div><hr class="separator"><button class="action full" id="ops-disruption">+ Trigger simulated official closure</button><button class="action full" id="ops-reset">Reset scenario</button><button class="action full" id="ops-export">Export reports JSON</button></div><div class="panel panel-padding" style="margin-top:15px"><div class="section-hd"><h2>Trust policy</h2></div><div class="ops-sim"><b>Authority boundary.</b><br>Two eyewitnesses may make an incident corroborated, but not officially closed. Only a verified authority source can confirm road closure status in a real deployment. This demo's official-looking events are explicitly fictional.</div></div></div></div></section>
+<section id="view-share" class="hide"><div class="share-grid"><div class="panel panel-padding"><div class="section-hd"><h2>Event partner launch kit</h2><span class="mini-tag">Discoverability</span></div><p style="font-size:12px;color:#74877b;line-height:1.7">Meet people where the event already has their attention. Display a single trusted link on stadium signage, exit screens, event emails, and organizer-owned social posts.</p><div class="poster" id="poster"><div><div class="poster-head">↗ RallyRoute.</div><p style="margin-top:30px;color:#d8f4bb;font-size:11px;text-transform:uppercase;letter-spacing:2px;font-weight:850">Leaving the celebration?</p><h2>Get home.<br><em>Skip the guesswork.</em></h2><p>Street disruptions. Crowd reports. A smarter place to start your journey.</p></div><div><div class="poster-qr"><div class="qr-render" id="qr-code">QR</div><div><b style="display:block;font-size:17px">Scan. Check. Go.</b><span style="color:#688170;font-size:12px;line-height:1.5;display:block;margin-top:5px">No app download.<br>No sign-up.</span></div></div><div style="margin-top:13px"><small>KNICKS CELEBRATION · DEMONSTRATION ONLY</small></div></div></div></div><div class="panel panel-padding"><div class="section-hd"><h2>Launch in one link</h2></div><p style="font-size:12px;color:#6e8172;line-height:1.7">Host the HTML file on HTTPS, then publish its RallyRoute address through existing venue channels. The QR code will encode that hosted address.</p><div class="field-label">Current launch URL</div><div class="copyline"><input id="share-url" readonly><button class="action dark" id="copy-link">Copy</button></div><div class="ready-warn" id="hosted-warning">Local files and localhost URLs are not usable QR destinations for other phones. Deploy to a public HTTPS URL to enable a scannable visitor experience.</div><hr class="separator"><div class="section-hd"><h2>Suggested activation channels</h2></div><div class="step-list"><div class="step"><span class="step-n">1</span><div><strong>Venue screens + exit QR posters</strong><p>Fans encounter RallyRoute exactly when they decide to leave.</p></div></div><div class="step"><span class="step-n">2</span><div><strong>Organizer-owned SMS or email</strong><p>Share with opt-in attendees using a recognized sender.</p></div></div><div class="step"><span class="step-n">3</span><div><strong>Social posts + shareable incident links</strong><p>Disruption cards lead back to the current event view.</p></div></div></div><button class="action dark full" style="margin-top:20px" id="print-poster">Print poster / save PDF ↗</button><p class="travel-note">Printing works best after hosting, when the QR destination is publicly accessible.</p></div></div></section>
+<div class="foot">RallyRoute · Hackathon prototype · No affiliation with the Knicks, MSG, Google, NYC DOT, NYPD, or MTA. Not an emergency notification service.</div>
+</main><div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>/* MIT licensed QRCode implementation originally by Kazuhiko Arase; bundled from npm qrcode-terminal */
+(function(g){var modules={"QR8bitByte":function(module,exports,require){
+var QRMode = require('./QRMode');
+
+function QR8bitByte(data) {
+	this.mode = QRMode.MODE_8BIT_BYTE;
+	this.data = data;
+}
+
+QR8bitByte.prototype = {
+
+	getLength : function() {
+		return this.data.length;
+	},
+	
+	write : function(buffer) {
+		for (var i = 0; i < this.data.length; i++) {
+			// not JIS ...
+			buffer.put(this.data.charCodeAt(i), 8);
+		}
+	}
+};
+
+module.exports = QR8bitByte;
+
+},"QRBitBuffer":function(module,exports,require){
+function QRBitBuffer() {
+	this.buffer = [];
+	this.length = 0;
+}
+
+QRBitBuffer.prototype = {
+
+	get : function(index) {
+		var bufIndex = Math.floor(index / 8);
+		return ( (this.buffer[bufIndex] >>> (7 - index % 8) ) & 1) == 1;
+	},
+	
+	put : function(num, length) {
+		for (var i = 0; i < length; i++) {
+			this.putBit( ( (num >>> (length - i - 1) ) & 1) == 1);
+		}
+	},
+	
+	getLengthInBits : function() {
+		return this.length;
+	},
+	
+	putBit : function(bit) {
+	
+		var bufIndex = Math.floor(this.length / 8);
+		if (this.buffer.length <= bufIndex) {
+			this.buffer.push(0);
+		}
+	
+		if (bit) {
+			this.buffer[bufIndex] |= (0x80 >>> (this.length % 8) );
+		}
+	
+		this.length++;
+	}
+};
+
+module.exports = QRBitBuffer;
+
+},"QRErrorCorrectLevel":function(module,exports,require){
+module.exports = {
+	L : 1,
+	M : 0,
+	Q : 3,
+	H : 2
+};
+
+
+},"QRMaskPattern":function(module,exports,require){
+module.exports = {
+	PATTERN000 : 0,
+	PATTERN001 : 1,
+	PATTERN010 : 2,
+	PATTERN011 : 3,
+	PATTERN100 : 4,
+	PATTERN101 : 5,
+	PATTERN110 : 6,
+	PATTERN111 : 7
+};
+
+},"QRMath":function(module,exports,require){
+var QRMath = {
+
+	glog : function(n) {
+	
+		if (n < 1) {
+			throw new Error("glog(" + n + ")");
+		}
+		
+		return QRMath.LOG_TABLE[n];
+	},
+	
+	gexp : function(n) {
+	
+		while (n < 0) {
+			n += 255;
+		}
+	
+		while (n >= 256) {
+			n -= 255;
+		}
+	
+		return QRMath.EXP_TABLE[n];
+	},
+	
+	EXP_TABLE : new Array(256),
+	
+	LOG_TABLE : new Array(256)
+
+};
+	
+for (var i = 0; i < 8; i++) {
+	QRMath.EXP_TABLE[i] = 1 << i;
+}
+for (var i = 8; i < 256; i++) {
+	QRMath.EXP_TABLE[i] = QRMath.EXP_TABLE[i - 4]
+		^ QRMath.EXP_TABLE[i - 5]
+		^ QRMath.EXP_TABLE[i - 6]
+		^ QRMath.EXP_TABLE[i - 8];
+}
+for (var i = 0; i < 255; i++) {
+	QRMath.LOG_TABLE[QRMath.EXP_TABLE[i] ] = i;
+}
+
+module.exports = QRMath;
+
+},"QRMode":function(module,exports,require){
+module.exports = {
+    MODE_NUMBER :       1 << 0,
+    MODE_ALPHA_NUM :    1 << 1,
+    MODE_8BIT_BYTE :    1 << 2,
+    MODE_KANJI :        1 << 3
+};
+
+},"QRPolynomial":function(module,exports,require){
+var QRMath = require('./QRMath');
+
+function QRPolynomial(num, shift) {
+	if (num.length === undefined) {
+		throw new Error(num.length + "/" + shift);
+	}
+
+	var offset = 0;
+
+	while (offset < num.length && num[offset] === 0) {
+		offset++;
+	}
+
+	this.num = new Array(num.length - offset + shift);
+	for (var i = 0; i < num.length - offset; i++) {
+		this.num[i] = num[i + offset];
+	}
+}
+
+QRPolynomial.prototype = {
+
+	get : function(index) {
+		return this.num[index];
+	},
+	
+	getLength : function() {
+		return this.num.length;
+	},
+	
+	multiply : function(e) {
+	
+		var num = new Array(this.getLength() + e.getLength() - 1);
+	
+		for (var i = 0; i < this.getLength(); i++) {
+			for (var j = 0; j < e.getLength(); j++) {
+				num[i + j] ^= QRMath.gexp(QRMath.glog(this.get(i) ) + QRMath.glog(e.get(j) ) );
+			}
+		}
+	
+		return new QRPolynomial(num, 0);
+	},
+	
+	mod : function(e) {
+	
+		if (this.getLength() - e.getLength() < 0) {
+			return this;
+		}
+	
+		var ratio = QRMath.glog(this.get(0) ) - QRMath.glog(e.get(0) );
+	
+		var num = new Array(this.getLength() );
+		
+		for (var i = 0; i < this.getLength(); i++) {
+			num[i] = this.get(i);
+		}
+		
+		for (var x = 0; x < e.getLength(); x++) {
+			num[x] ^= QRMath.gexp(QRMath.glog(e.get(x) ) + ratio);
+		}
+	
+		// recursive call
+		return new QRPolynomial(num, 0).mod(e);
+	}
+};
+
+module.exports = QRPolynomial;
+
+},"QRRSBlock":function(module,exports,require){
+var QRErrorCorrectLevel = require('./QRErrorCorrectLevel');
+
+function QRRSBlock(totalCount, dataCount) {
+	this.totalCount = totalCount;
+	this.dataCount  = dataCount;
+}
+
+QRRSBlock.RS_BLOCK_TABLE = [
+
+	// L
+	// M
+	// Q
+	// H
+
+	// 1
+	[1, 26, 19],
+	[1, 26, 16],
+	[1, 26, 13],
+	[1, 26, 9],
+	
+	// 2
+	[1, 44, 34],
+	[1, 44, 28],
+	[1, 44, 22],
+	[1, 44, 16],
+
+	// 3
+	[1, 70, 55],
+	[1, 70, 44],
+	[2, 35, 17],
+	[2, 35, 13],
+
+	// 4		
+	[1, 100, 80],
+	[2, 50, 32],
+	[2, 50, 24],
+	[4, 25, 9],
+	
+	// 5
+	[1, 134, 108],
+	[2, 67, 43],
+	[2, 33, 15, 2, 34, 16],
+	[2, 33, 11, 2, 34, 12],
+	
+	// 6
+	[2, 86, 68],
+	[4, 43, 27],
+	[4, 43, 19],
+	[4, 43, 15],
+	
+	// 7		
+	[2, 98, 78],
+	[4, 49, 31],
+	[2, 32, 14, 4, 33, 15],
+	[4, 39, 13, 1, 40, 14],
+	
+	// 8
+	[2, 121, 97],
+	[2, 60, 38, 2, 61, 39],
+	[4, 40, 18, 2, 41, 19],
+	[4, 40, 14, 2, 41, 15],
+	
+	// 9
+	[2, 146, 116],
+	[3, 58, 36, 2, 59, 37],
+	[4, 36, 16, 4, 37, 17],
+	[4, 36, 12, 4, 37, 13],
+	
+	// 10		
+	[2, 86, 68, 2, 87, 69],
+	[4, 69, 43, 1, 70, 44],
+	[6, 43, 19, 2, 44, 20],
+	[6, 43, 15, 2, 44, 16],
+
+	// 11
+	[4, 101, 81],
+	[1, 80, 50, 4, 81, 51],
+	[4, 50, 22, 4, 51, 23],
+	[3, 36, 12, 8, 37, 13],
+
+	// 12
+	[2, 116, 92, 2, 117, 93],
+	[6, 58, 36, 2, 59, 37],
+	[4, 46, 20, 6, 47, 21],
+	[7, 42, 14, 4, 43, 15],
+
+	// 13
+	[4, 133, 107],
+	[8, 59, 37, 1, 60, 38],
+	[8, 44, 20, 4, 45, 21],
+	[12, 33, 11, 4, 34, 12],
+
+	// 14
+	[3, 145, 115, 1, 146, 116],
+	[4, 64, 40, 5, 65, 41],
+	[11, 36, 16, 5, 37, 17],
+	[11, 36, 12, 5, 37, 13],
+
+	// 15
+	[5, 109, 87, 1, 110, 88],
+	[5, 65, 41, 5, 66, 42],
+	[5, 54, 24, 7, 55, 25],
+	[11, 36, 12],
+
+	// 16
+	[5, 122, 98, 1, 123, 99],
+	[7, 73, 45, 3, 74, 46],
+	[15, 43, 19, 2, 44, 20],
+	[3, 45, 15, 13, 46, 16],
+
+	// 17
+	[1, 135, 107, 5, 136, 108],
+	[10, 74, 46, 1, 75, 47],
+	[1, 50, 22, 15, 51, 23],
+	[2, 42, 14, 17, 43, 15],
+
+	// 18
+	[5, 150, 120, 1, 151, 121],
+	[9, 69, 43, 4, 70, 44],
+	[17, 50, 22, 1, 51, 23],
+	[2, 42, 14, 19, 43, 15],
+
+	// 19
+	[3, 141, 113, 4, 142, 114],
+	[3, 70, 44, 11, 71, 45],
+	[17, 47, 21, 4, 48, 22],
+	[9, 39, 13, 16, 40, 14],
+
+	// 20
+	[3, 135, 107, 5, 136, 108],
+	[3, 67, 41, 13, 68, 42],
+	[15, 54, 24, 5, 55, 25],
+	[15, 43, 15, 10, 44, 16],
+
+	// 21
+	[4, 144, 116, 4, 145, 117],
+	[17, 68, 42],
+	[17, 50, 22, 6, 51, 23],
+	[19, 46, 16, 6, 47, 17],
+
+	// 22
+	[2, 139, 111, 7, 140, 112],
+	[17, 74, 46],
+	[7, 54, 24, 16, 55, 25],
+	[34, 37, 13],
+
+	// 23
+	[4, 151, 121, 5, 152, 122],
+	[4, 75, 47, 14, 76, 48],
+	[11, 54, 24, 14, 55, 25],
+	[16, 45, 15, 14, 46, 16],
+
+	// 24
+	[6, 147, 117, 4, 148, 118],
+	[6, 73, 45, 14, 74, 46],
+	[11, 54, 24, 16, 55, 25],
+	[30, 46, 16, 2, 47, 17],
+
+	// 25
+	[8, 132, 106, 4, 133, 107],
+	[8, 75, 47, 13, 76, 48],
+	[7, 54, 24, 22, 55, 25],
+	[22, 45, 15, 13, 46, 16],
+
+	// 26
+	[10, 142, 114, 2, 143, 115],
+	[19, 74, 46, 4, 75, 47],
+	[28, 50, 22, 6, 51, 23],
+	[33, 46, 16, 4, 47, 17],
+
+	// 27
+	[8, 152, 122, 4, 153, 123],
+	[22, 73, 45, 3, 74, 46],
+	[8, 53, 23, 26, 54, 24],
+	[12, 45, 15, 28, 46, 16],
+
+	// 28
+	[3, 147, 117, 10, 148, 118],
+	[3, 73, 45, 23, 74, 46],
+	[4, 54, 24, 31, 55, 25],
+	[11, 45, 15, 31, 46, 16],
+
+	// 29
+	[7, 146, 116, 7, 147, 117],
+	[21, 73, 45, 7, 74, 46],
+	[1, 53, 23, 37, 54, 24],
+	[19, 45, 15, 26, 46, 16],
+
+	// 30
+	[5, 145, 115, 10, 146, 116],
+	[19, 75, 47, 10, 76, 48],
+	[15, 54, 24, 25, 55, 25],
+	[23, 45, 15, 25, 46, 16],
+
+	// 31
+	[13, 145, 115, 3, 146, 116],
+	[2, 74, 46, 29, 75, 47],
+	[42, 54, 24, 1, 55, 25],
+	[23, 45, 15, 28, 46, 16],
+
+	// 32
+	[17, 145, 115],
+	[10, 74, 46, 23, 75, 47],
+	[10, 54, 24, 35, 55, 25],
+	[19, 45, 15, 35, 46, 16],
+
+	// 33
+	[17, 145, 115, 1, 146, 116],
+	[14, 74, 46, 21, 75, 47],
+	[29, 54, 24, 19, 55, 25],
+	[11, 45, 15, 46, 46, 16],
+
+	// 34
+	[13, 145, 115, 6, 146, 116],
+	[14, 74, 46, 23, 75, 47],
+	[44, 54, 24, 7, 55, 25],
+	[59, 46, 16, 1, 47, 17],
+
+	// 35
+	[12, 151, 121, 7, 152, 122],
+	[12, 75, 47, 26, 76, 48],
+	[39, 54, 24, 14, 55, 25],
+	[22, 45, 15, 41, 46, 16],
+
+	// 36
+	[6, 151, 121, 14, 152, 122],
+	[6, 75, 47, 34, 76, 48],
+	[46, 54, 24, 10, 55, 25],
+	[2, 45, 15, 64, 46, 16],
+
+	// 37
+	[17, 152, 122, 4, 153, 123],
+	[29, 74, 46, 14, 75, 47],
+	[49, 54, 24, 10, 55, 25],
+	[24, 45, 15, 46, 46, 16],
+
+	// 38
+	[4, 152, 122, 18, 153, 123],
+	[13, 74, 46, 32, 75, 47],
+	[48, 54, 24, 14, 55, 25],
+	[42, 45, 15, 32, 46, 16],
+
+	// 39
+	[20, 147, 117, 4, 148, 118],
+	[40, 75, 47, 7, 76, 48],
+	[43, 54, 24, 22, 55, 25],
+	[10, 45, 15, 67, 46, 16],
+
+	// 40
+	[19, 148, 118, 6, 149, 119],
+	[18, 75, 47, 31, 76, 48],
+	[34, 54, 24, 34, 55, 25],
+	[20, 45, 15, 61, 46, 16]
+];
+
+QRRSBlock.getRSBlocks = function(typeNumber, errorCorrectLevel) {
+	
+	var rsBlock = QRRSBlock.getRsBlockTable(typeNumber, errorCorrectLevel);
+	
+	if (rsBlock === undefined) {
+		throw new Error("bad rs block @ typeNumber:" + typeNumber + "/errorCorrectLevel:" + errorCorrectLevel);
+	}
+
+	var length = rsBlock.length / 3;
+	
+	var list = [];
+	
+	for (var i = 0; i < length; i++) {
+
+		var count = rsBlock[i * 3 + 0];
+		var totalCount = rsBlock[i * 3 + 1];
+		var dataCount  = rsBlock[i * 3 + 2];
+
+		for (var j = 0; j < count; j++) {
+			list.push(new QRRSBlock(totalCount, dataCount) );	
+		}
+	}
+	
+	return list;
+};
+
+QRRSBlock.getRsBlockTable = function(typeNumber, errorCorrectLevel) {
+
+	switch(errorCorrectLevel) {
+	case QRErrorCorrectLevel.L :
+		return QRRSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 0];
+	case QRErrorCorrectLevel.M :
+		return QRRSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 1];
+	case QRErrorCorrectLevel.Q :
+		return QRRSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 2];
+	case QRErrorCorrectLevel.H :
+		return QRRSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 3];
+	default :
+		return undefined;
+	}
+};
+
+module.exports = QRRSBlock;
+
+},"QRUtil":function(module,exports,require){
+var QRMode = require('./QRMode');
+var QRPolynomial = require('./QRPolynomial');
+var QRMath = require('./QRMath');
+var QRMaskPattern = require('./QRMaskPattern');
+
+var QRUtil = {
+
+    PATTERN_POSITION_TABLE : [
+        [],
+        [6, 18],
+        [6, 22],
+        [6, 26],
+        [6, 30],
+        [6, 34],
+        [6, 22, 38],
+        [6, 24, 42],
+        [6, 26, 46],
+        [6, 28, 50],
+        [6, 30, 54],        
+        [6, 32, 58],
+        [6, 34, 62],
+        [6, 26, 46, 66],
+        [6, 26, 48, 70],
+        [6, 26, 50, 74],
+        [6, 30, 54, 78],
+        [6, 30, 56, 82],
+        [6, 30, 58, 86],
+        [6, 34, 62, 90],
+        [6, 28, 50, 72, 94],
+        [6, 26, 50, 74, 98],
+        [6, 30, 54, 78, 102],
+        [6, 28, 54, 80, 106],
+        [6, 32, 58, 84, 110],
+        [6, 30, 58, 86, 114],
+        [6, 34, 62, 90, 118],
+        [6, 26, 50, 74, 98, 122],
+        [6, 30, 54, 78, 102, 126],
+        [6, 26, 52, 78, 104, 130],
+        [6, 30, 56, 82, 108, 134],
+        [6, 34, 60, 86, 112, 138],
+        [6, 30, 58, 86, 114, 142],
+        [6, 34, 62, 90, 118, 146],
+        [6, 30, 54, 78, 102, 126, 150],
+        [6, 24, 50, 76, 102, 128, 154],
+        [6, 28, 54, 80, 106, 132, 158],
+        [6, 32, 58, 84, 110, 136, 162],
+        [6, 26, 54, 82, 110, 138, 166],
+        [6, 30, 58, 86, 114, 142, 170]
+    ],
+
+    G15 : (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0),
+    G18 : (1 << 12) | (1 << 11) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 5) | (1 << 2) | (1 << 0),
+    G15_MASK : (1 << 14) | (1 << 12) | (1 << 10)    | (1 << 4) | (1 << 1),
+
+    getBCHTypeInfo : function(data) {
+        var d = data << 10;
+        while (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G15) >= 0) {
+            d ^= (QRUtil.G15 << (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G15) ) );    
+        }
+        return ( (data << 10) | d) ^ QRUtil.G15_MASK;
+    },
+
+    getBCHTypeNumber : function(data) {
+        var d = data << 12;
+        while (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G18) >= 0) {
+            d ^= (QRUtil.G18 << (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G18) ) );    
+        }
+        return (data << 12) | d;
+    },
+
+    getBCHDigit : function(data) {
+
+        var digit = 0;
+
+        while (data !== 0) {
+            digit++;
+            data >>>= 1;
+        }
+
+        return digit;
+    },
+
+    getPatternPosition : function(typeNumber) {
+        return QRUtil.PATTERN_POSITION_TABLE[typeNumber - 1];
+    },
+
+    getMask : function(maskPattern, i, j) {
+        
+        switch (maskPattern) {
+            
+        case QRMaskPattern.PATTERN000 : return (i + j) % 2 === 0;
+        case QRMaskPattern.PATTERN001 : return i % 2 === 0;
+        case QRMaskPattern.PATTERN010 : return j % 3 === 0;
+        case QRMaskPattern.PATTERN011 : return (i + j) % 3 === 0;
+        case QRMaskPattern.PATTERN100 : return (Math.floor(i / 2) + Math.floor(j / 3) ) % 2 === 0;
+        case QRMaskPattern.PATTERN101 : return (i * j) % 2 + (i * j) % 3 === 0;
+        case QRMaskPattern.PATTERN110 : return ( (i * j) % 2 + (i * j) % 3) % 2 === 0;
+        case QRMaskPattern.PATTERN111 : return ( (i * j) % 3 + (i + j) % 2) % 2 === 0;
+
+        default :
+            throw new Error("bad maskPattern:" + maskPattern);
+        }
+    },
+
+    getErrorCorrectPolynomial : function(errorCorrectLength) {
+
+        var a = new QRPolynomial([1], 0);
+
+        for (var i = 0; i < errorCorrectLength; i++) {
+            a = a.multiply(new QRPolynomial([1, QRMath.gexp(i)], 0) );
+        }
+
+        return a;
+    },
+
+    getLengthInBits : function(mode, type) {
+
+        if (1 <= type && type < 10) {
+
+            // 1 - 9
+
+            switch(mode) {
+            case QRMode.MODE_NUMBER     : return 10;
+            case QRMode.MODE_ALPHA_NUM  : return 9;
+            case QRMode.MODE_8BIT_BYTE  : return 8;
+            case QRMode.MODE_KANJI      : return 8;
+            default :
+                throw new Error("mode:" + mode);
+            }
+
+        } else if (type < 27) {
+            // 10 - 26
+
+            switch(mode) {
+            case QRMode.MODE_NUMBER     : return 12;
+            case QRMode.MODE_ALPHA_NUM  : return 11;
+            case QRMode.MODE_8BIT_BYTE  : return 16;
+            case QRMode.MODE_KANJI      : return 10;
+            default :
+                throw new Error("mode:" + mode);
+            }
+
+        } else if (type < 41) {
+
+            // 27 - 40
+
+            switch(mode) {
+            case QRMode.MODE_NUMBER     : return 14;
+            case QRMode.MODE_ALPHA_NUM  : return 13;
+            case QRMode.MODE_8BIT_BYTE  : return 16;
+            case QRMode.MODE_KANJI      : return 12;
+            default :
+                throw new Error("mode:" + mode);
+            }
+
+        } else {
+            throw new Error("type:" + type);
+        }
+    },
+
+    getLostPoint : function(qrCode) {
+        
+        var moduleCount = qrCode.getModuleCount();
+        var lostPoint = 0;
+        var row = 0; 
+        var col = 0;
+
+        
+        // LEVEL1
+        
+        for (row = 0; row < moduleCount; row++) {
+
+            for (col = 0; col < moduleCount; col++) {
+
+                var sameCount = 0;
+                var dark = qrCode.isDark(row, col);
+
+                for (var r = -1; r <= 1; r++) {
+
+                    if (row + r < 0 || moduleCount <= row + r) {
+                        continue;
+                    }
+
+                    for (var c = -1; c <= 1; c++) {
+
+                        if (col + c < 0 || moduleCount <= col + c) {
+                            continue;
+                        }
+
+                        if (r === 0 && c === 0) {
+                            continue;
+                        }
+
+                        if (dark === qrCode.isDark(row + r, col + c) ) {
+                            sameCount++;
+                        }
+                    }
+                }
+
+                if (sameCount > 5) {
+                    lostPoint += (3 + sameCount - 5);
+                }
+            }
+        }
+
+        // LEVEL2
+
+        for (row = 0; row < moduleCount - 1; row++) {
+            for (col = 0; col < moduleCount - 1; col++) {
+                var count = 0;
+                if (qrCode.isDark(row,     col    ) ) count++;
+                if (qrCode.isDark(row + 1, col    ) ) count++;
+                if (qrCode.isDark(row,     col + 1) ) count++;
+                if (qrCode.isDark(row + 1, col + 1) ) count++;
+                if (count === 0 || count === 4) {
+                    lostPoint += 3;
+                }
+            }
+        }
+
+        // LEVEL3
+
+        for (row = 0; row < moduleCount; row++) {
+            for (col = 0; col < moduleCount - 6; col++) {
+                if (qrCode.isDark(row, col) && 
+                        !qrCode.isDark(row, col + 1) && 
+                         qrCode.isDark(row, col + 2) && 
+                         qrCode.isDark(row, col + 3) && 
+                         qrCode.isDark(row, col + 4) && 
+                        !qrCode.isDark(row, col + 5) && 
+                         qrCode.isDark(row, col + 6) ) {
+                    lostPoint += 40;
+                }
+            }
+        }
+
+        for (col = 0; col < moduleCount; col++) {
+            for (row = 0; row < moduleCount - 6; row++) {
+                if (qrCode.isDark(row, col) &&
+                        !qrCode.isDark(row + 1, col) &&
+                         qrCode.isDark(row + 2, col) &&
+                         qrCode.isDark(row + 3, col) &&
+                         qrCode.isDark(row + 4, col) &&
+                        !qrCode.isDark(row + 5, col) &&
+                         qrCode.isDark(row + 6, col) ) {
+                    lostPoint += 40;
+                }
+            }
+        }
+
+        // LEVEL4
+        
+        var darkCount = 0;
+
+        for (col = 0; col < moduleCount; col++) {
+            for (row = 0; row < moduleCount; row++) {
+                if (qrCode.isDark(row, col) ) {
+                    darkCount++;
+                }
+            }
+        }
+        
+        var ratio = Math.abs(100 * darkCount / moduleCount / moduleCount - 50) / 5;
+        lostPoint += ratio * 10;
+
+        return lostPoint;       
+    }
+
+};
+
+module.exports = QRUtil;
+
+},"index":function(module,exports,require){
+//---------------------------------------------------------------------
+// QRCode for JavaScript
+//
+// Copyright (c) 2009 Kazuhiko Arase
+//
+// URL: http://www.d-project.com/
+//
+// Licensed under the MIT license:
+//   http://www.opensource.org/licenses/mit-license.php
+//
+// The word "QR Code" is registered trademark of 
+// DENSO WAVE INCORPORATED
+//   http://www.denso-wave.com/qrcode/faqpatent-e.html
+//
+//---------------------------------------------------------------------
+// Modified to work in node for this project (and some refactoring)
+//---------------------------------------------------------------------
+
+var QR8bitByte = require('./QR8bitByte');
+var QRUtil = require('./QRUtil');
+var QRPolynomial = require('./QRPolynomial');
+var QRRSBlock = require('./QRRSBlock');
+var QRBitBuffer = require('./QRBitBuffer');
+
+function QRCode(typeNumber, errorCorrectLevel) {
+	this.typeNumber = typeNumber;
+	this.errorCorrectLevel = errorCorrectLevel;
+	this.modules = null;
+	this.moduleCount = 0;
+	this.dataCache = null;
+	this.dataList = [];
+}
+
+QRCode.prototype = {
+	
+	addData : function(data) {
+		var newData = new QR8bitByte(data);
+		this.dataList.push(newData);
+		this.dataCache = null;
+	},
+	
+	isDark : function(row, col) {
+		if (row < 0 || this.moduleCount <= row || col < 0 || this.moduleCount <= col) {
+			throw new Error(row + "," + col);
+		}
+		return this.modules[row][col];
+	},
+
+	getModuleCount : function() {
+		return this.moduleCount;
+	},
+	
+	make : function() {
+		// Calculate automatically typeNumber if provided is < 1
+		if (this.typeNumber < 1 ){
+			var typeNumber = 1;
+			for (typeNumber = 1; typeNumber < 40; typeNumber++) {
+				var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, this.errorCorrectLevel);
+
+				var buffer = new QRBitBuffer();
+				var totalDataCount = 0;
+				for (var i = 0; i < rsBlocks.length; i++) {
+					totalDataCount += rsBlocks[i].dataCount;
+				}
+
+				for (var x = 0; x < this.dataList.length; x++) {
+					var data = this.dataList[x];
+					buffer.put(data.mode, 4);
+					buffer.put(data.getLength(), QRUtil.getLengthInBits(data.mode, typeNumber) );
+					data.write(buffer);
+				}
+				if (buffer.getLengthInBits() <= totalDataCount * 8)
+					break;
+			}
+			this.typeNumber = typeNumber;
+		}
+		this.makeImpl(false, this.getBestMaskPattern() );
+	},
+	
+	makeImpl : function(test, maskPattern) {
+		
+		this.moduleCount = this.typeNumber * 4 + 17;
+		this.modules = new Array(this.moduleCount);
+		
+		for (var row = 0; row < this.moduleCount; row++) {
+			
+			this.modules[row] = new Array(this.moduleCount);
+			
+			for (var col = 0; col < this.moduleCount; col++) {
+				this.modules[row][col] = null;//(col + row) % 3;
+			}
+		}
+	
+		this.setupPositionProbePattern(0, 0);
+		this.setupPositionProbePattern(this.moduleCount - 7, 0);
+		this.setupPositionProbePattern(0, this.moduleCount - 7);
+		this.setupPositionAdjustPattern();
+		this.setupTimingPattern();
+		this.setupTypeInfo(test, maskPattern);
+		
+		if (this.typeNumber >= 7) {
+			this.setupTypeNumber(test);
+		}
+	
+		if (this.dataCache === null) {
+			this.dataCache = QRCode.createData(this.typeNumber, this.errorCorrectLevel, this.dataList);
+		}
+	
+		this.mapData(this.dataCache, maskPattern);
+	},
+
+	setupPositionProbePattern : function(row, col)  {
+		
+		for (var r = -1; r <= 7; r++) {
+			
+			if (row + r <= -1 || this.moduleCount <= row + r) continue;
+			
+			for (var c = -1; c <= 7; c++) {
+				
+				if (col + c <= -1 || this.moduleCount <= col + c) continue;
+				
+				if ( (0 <= r && r <= 6 && (c === 0 || c === 6) ) || 
+                     (0 <= c && c <= 6 && (r === 0 || r === 6) ) || 
+                     (2 <= r && r <= 4 && 2 <= c && c <= 4) ) {
+					this.modules[row + r][col + c] = true;
+				} else {
+					this.modules[row + r][col + c] = false;
+				}
+			}		
+		}		
+	},
+	
+	getBestMaskPattern : function() {
+	
+		var minLostPoint = 0;
+		var pattern = 0;
+	
+		for (var i = 0; i < 8; i++) {
+			
+			this.makeImpl(true, i);
+	
+			var lostPoint = QRUtil.getLostPoint(this);
+	
+			if (i === 0 || minLostPoint >  lostPoint) {
+				minLostPoint = lostPoint;
+				pattern = i;
+			}
+		}
+	
+		return pattern;
+	},
+	
+	createMovieClip : function(target_mc, instance_name, depth) {
+	
+		var qr_mc = target_mc.createEmptyMovieClip(instance_name, depth);
+		var cs = 1;
+	
+		this.make();
+
+		for (var row = 0; row < this.modules.length; row++) {
+			
+			var y = row * cs;
+			
+			for (var col = 0; col < this.modules[row].length; col++) {
+	
+				var x = col * cs;
+				var dark = this.modules[row][col];
+			
+				if (dark) {
+					qr_mc.beginFill(0, 100);
+					qr_mc.moveTo(x, y);
+					qr_mc.lineTo(x + cs, y);
+					qr_mc.lineTo(x + cs, y + cs);
+					qr_mc.lineTo(x, y + cs);
+					qr_mc.endFill();
+				}
+			}
+		}
+		
+		return qr_mc;
+	},
+
+	setupTimingPattern : function() {
+		
+		for (var r = 8; r < this.moduleCount - 8; r++) {
+			if (this.modules[r][6] !== null) {
+				continue;
+			}
+			this.modules[r][6] = (r % 2 === 0);
+		}
+	
+		for (var c = 8; c < this.moduleCount - 8; c++) {
+			if (this.modules[6][c] !== null) {
+				continue;
+			}
+			this.modules[6][c] = (c % 2 === 0);
+		}
+	},
+	
+	setupPositionAdjustPattern : function() {
+	
+		var pos = QRUtil.getPatternPosition(this.typeNumber);
+		
+		for (var i = 0; i < pos.length; i++) {
+		
+			for (var j = 0; j < pos.length; j++) {
+			
+				var row = pos[i];
+				var col = pos[j];
+				
+				if (this.modules[row][col] !== null) {
+					continue;
+				}
+				
+				for (var r = -2; r <= 2; r++) {
+				
+					for (var c = -2; c <= 2; c++) {
+					
+						if (Math.abs(r) === 2 || 
+                            Math.abs(c) === 2 ||
+                            (r === 0 && c === 0) ) {
+							this.modules[row + r][col + c] = true;
+						} else {
+							this.modules[row + r][col + c] = false;
+						}
+					}
+				}
+			}
+		}
+	},
+	
+	setupTypeNumber : function(test) {
+	
+		var bits = QRUtil.getBCHTypeNumber(this.typeNumber);
+        var mod;
+	
+		for (var i = 0; i < 18; i++) {
+			mod = (!test && ( (bits >> i) & 1) === 1);
+			this.modules[Math.floor(i / 3)][i % 3 + this.moduleCount - 8 - 3] = mod;
+		}
+	
+		for (var x = 0; x < 18; x++) {
+			mod = (!test && ( (bits >> x) & 1) === 1);
+			this.modules[x % 3 + this.moduleCount - 8 - 3][Math.floor(x / 3)] = mod;
+		}
+	},
+	
+	setupTypeInfo : function(test, maskPattern) {
+	
+		var data = (this.errorCorrectLevel << 3) | maskPattern;
+		var bits = QRUtil.getBCHTypeInfo(data);
+        var mod;
+	
+		// vertical		
+		for (var v = 0; v < 15; v++) {
+	
+			mod = (!test && ( (bits >> v) & 1) === 1);
+	
+			if (v < 6) {
+				this.modules[v][8] = mod;
+			} else if (v < 8) {
+				this.modules[v + 1][8] = mod;
+			} else {
+				this.modules[this.moduleCount - 15 + v][8] = mod;
+			}
+		}
+	
+		// horizontal
+		for (var h = 0; h < 15; h++) {
+	
+			mod = (!test && ( (bits >> h) & 1) === 1);
+			
+			if (h < 8) {
+				this.modules[8][this.moduleCount - h - 1] = mod;
+			} else if (h < 9) {
+				this.modules[8][15 - h - 1 + 1] = mod;
+			} else {
+				this.modules[8][15 - h - 1] = mod;
+			}
+		}
+	
+		// fixed module
+		this.modules[this.moduleCount - 8][8] = (!test);
+	
+	},
+	
+	mapData : function(data, maskPattern) {
+		
+		var inc = -1;
+		var row = this.moduleCount - 1;
+		var bitIndex = 7;
+		var byteIndex = 0;
+		
+		for (var col = this.moduleCount - 1; col > 0; col -= 2) {
+	
+			if (col === 6) col--;
+	
+			while (true) {
+	
+				for (var c = 0; c < 2; c++) {
+					
+					if (this.modules[row][col - c] === null) {
+						
+						var dark = false;
+	
+						if (byteIndex < data.length) {
+							dark = ( ( (data[byteIndex] >>> bitIndex) & 1) === 1);
+						}
+	
+						var mask = QRUtil.getMask(maskPattern, row, col - c);
+	
+						if (mask) {
+							dark = !dark;
+						}
+						
+						this.modules[row][col - c] = dark;
+						bitIndex--;
+	
+						if (bitIndex === -1) {
+							byteIndex++;
+							bitIndex = 7;
+						}
+					}
+				}
+								
+				row += inc;
+	
+				if (row < 0 || this.moduleCount <= row) {
+					row -= inc;
+					inc = -inc;
+					break;
+				}
+			}
+		}
+		
+	}
+
+};
+
+QRCode.PAD0 = 0xEC;
+QRCode.PAD1 = 0x11;
+
+QRCode.createData = function(typeNumber, errorCorrectLevel, dataList) {
+	
+	var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, errorCorrectLevel);
+	
+	var buffer = new QRBitBuffer();
+	
+	for (var i = 0; i < dataList.length; i++) {
+		var data = dataList[i];
+		buffer.put(data.mode, 4);
+		buffer.put(data.getLength(), QRUtil.getLengthInBits(data.mode, typeNumber) );
+		data.write(buffer);
+	}
+
+	// calc num max data.
+	var totalDataCount = 0;
+	for (var x = 0; x < rsBlocks.length; x++) {
+		totalDataCount += rsBlocks[x].dataCount;
+	}
+
+	if (buffer.getLengthInBits() > totalDataCount * 8) {
+		throw new Error("code length overflow. (" + 
+            buffer.getLengthInBits() + 
+            ">" +  
+            totalDataCount * 8 + 
+            ")");
+	}
+
+	// end code
+	if (buffer.getLengthInBits() + 4 <= totalDataCount * 8) {
+		buffer.put(0, 4);
+	}
+
+	// padding
+	while (buffer.getLengthInBits() % 8 !== 0) {
+		buffer.putBit(false);
+	}
+
+	// padding
+	while (true) {
+		
+		if (buffer.getLengthInBits() >= totalDataCount * 8) {
+			break;
+		}
+		buffer.put(QRCode.PAD0, 8);
+		
+		if (buffer.getLengthInBits() >= totalDataCount * 8) {
+			break;
+		}
+		buffer.put(QRCode.PAD1, 8);
+	}
+
+	return QRCode.createBytes(buffer, rsBlocks);
+};
+
+QRCode.createBytes = function(buffer, rsBlocks) {
+
+	var offset = 0;
+	
+	var maxDcCount = 0;
+	var maxEcCount = 0;
+	
+	var dcdata = new Array(rsBlocks.length);
+	var ecdata = new Array(rsBlocks.length);
+	
+	for (var r = 0; r < rsBlocks.length; r++) {
+
+		var dcCount = rsBlocks[r].dataCount;
+		var ecCount = rsBlocks[r].totalCount - dcCount;
+
+		maxDcCount = Math.max(maxDcCount, dcCount);
+		maxEcCount = Math.max(maxEcCount, ecCount);
+		
+		dcdata[r] = new Array(dcCount);
+		
+		for (var i = 0; i < dcdata[r].length; i++) {
+			dcdata[r][i] = 0xff & buffer.buffer[i + offset];
+		}
+		offset += dcCount;
+		
+		var rsPoly = QRUtil.getErrorCorrectPolynomial(ecCount);
+		var rawPoly = new QRPolynomial(dcdata[r], rsPoly.getLength() - 1);
+
+		var modPoly = rawPoly.mod(rsPoly);
+		ecdata[r] = new Array(rsPoly.getLength() - 1);
+		for (var x = 0; x < ecdata[r].length; x++) {
+            var modIndex = x + modPoly.getLength() - ecdata[r].length;
+			ecdata[r][x] = (modIndex >= 0)? modPoly.get(modIndex) : 0;
+		}
+
+	}
+	
+	var totalCodeCount = 0;
+	for (var y = 0; y < rsBlocks.length; y++) {
+		totalCodeCount += rsBlocks[y].totalCount;
+	}
+
+	var data = new Array(totalCodeCount);
+	var index = 0;
+
+	for (var z = 0; z < maxDcCount; z++) {
+		for (var s = 0; s < rsBlocks.length; s++) {
+			if (z < dcdata[s].length) {
+				data[index++] = dcdata[s][z];
+			}
+		}
+	}
+
+	for (var xx = 0; xx < maxEcCount; xx++) {
+		for (var t = 0; t < rsBlocks.length; t++) {
+			if (xx < ecdata[t].length) {
+				data[index++] = ecdata[t][xx];
+			}
+		}
+	}
+
+	return data;
+
+};
+
+module.exports = QRCode;
+
+}},cache={};function require(n){n=n.replace(/^\.\//,'');if(cache[n])return cache[n].exports;var m={exports:{}};cache[n]=m;if(!modules[n])throw Error('Missing QR module '+n);modules[n](m,m.exports,require);return m.exports;}g.QRCodeModel=require('index');})(window);
+</script>
+<script>
+(function(){'use strict';
+const KEY='rallyroute-v3-demo';
+const qs=s=>document.querySelector(s), qsa=s=>[...document.querySelectorAll(s)], escapeHTML=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const LOC={w34:{x:330,y:292,lat:40.75055,lng:-73.99184,label:'W 34th at 7th Ave'},w36:{x:220,y:234,lat:40.7542,lng:-73.9955,label:'W 36th at 8th Ave'},w32:{x:220,y:350,lat:40.7490,lng:-73.9952,label:'W 32nd at 8th Ave'},w40:{x:220,y:118,lat:40.7557,lng:-73.9922,label:'W 40th at 8th Ave'},w38:{x:330,y:176,lat:40.7535,lng:-73.9888,label:'W 38th at 7th Ave'},penn:{x:220,y:350,lat:40.75016,lng:-73.9945,label:'Penn Station · 8th Ave entrance'},port:{x:220,y:60,lat:40.7567,lng:-73.9903,label:'Port Authority Bus Terminal'},herald:{x:440,y:292,lat:40.74967,lng:-73.98792,label:'34 St–Herald Square station'},bryant:{x:440,y:118,lat:40.7536,lng:-73.9832,label:'Bryant Park'}};
+const DEST={port:{name:'Port Authority Bus Terminal',x:220,y:60,address:'Port Authority Bus Terminal, New York, NY',desc:'Head toward a station or bus-terminal entrance only after checking actual accessibility.'},herald:{name:'34 St–Herald Square station',x:440,y:292,address:'34 St–Herald Square, New York, NY',desc:'Consider an eastern subway entry point rather than assuming the MSG-adjacent entrances are clear.'},penn:{name:'Penn Station · 8th Ave entrance',x:220,y:350,address:'Penn Station 8th Avenue Entrance, New York, NY',desc:'A nearby entry may be useful, but entrance availability must be checked against live transit and authority notices.'},bryant:{name:'Bryant Park',x:440,y:118,address:'Bryant Park, New York, NY',desc:'Consider moving toward a less disrupted district, subject to live verification.'}};
+const initial=[
+{id:'i1',name:'Street closure at W 34th / 7th Ave',key:'w34',kind:'closure',source:'Illustrative official-style city alert (NOT an actual NYC DOT alert)',origin:'official-demo',status:'verified',detail:'Demo street segment closure. In this illustrative graph, the W 34th block between 7th and 6th avenues is restricted.',block:['2,4|3,4'],age:'Scenario · 8 min ago',confirmed:'Fictional official feed sample'},
+{id:'i2',name:'Heavy crowd reported at 8th Avenue',key:'w36',kind:'crowd',source:'Simulated eyewitness social report',origin:'social',status:'unverified',detail:'One fictional observer reports dense foot traffic near W 36th Street. No official roadway restriction has been established.',block:[],age:'Scenario · 4 min ago'},
+{id:'i3',name:'Station access looks congested',key:'w32',kind:'access',source:'Simulated public eyewitness report',origin:'community',status:'corroborated',detail:'Two independent fictional observers describe crowds near a station entrance. Corroboration does not confirm a formal closure.',block:[],age:'Scenario · 6 min ago'},
+{id:'i4',name:'Possible rideshare queue buildup',key:'w40',kind:'crowd',source:'Simulated social media post',origin:'social',status:'unverified',detail:'Unverified mention of pickup lines near 8th Avenue. Treat this as a signal only.',block:[],age:'Scenario · 2 min ago'}
+];
+let state={incidents:structuredClone(initial),destination:'port',mode:'walking',filter:'all',active:'i1',newClosure:false,lastReroute:false,view:'travel'};
+try{const s=JSON.parse(sessionStorage.getItem(KEY));if(s&&Array.isArray(s.incidents)){state={...state,...s};state.view='travel'}}catch(e){}
+function persist(){try{sessionStorage.setItem(KEY,JSON.stringify({...state,view:'travel'}))}catch(e){}}
+function toast(msg){const x=qs('#toast');x.textContent=msg;x.classList.add('show');setTimeout(()=>x.classList.remove('show'),2600)}
+function go(view){state.view=view;qsa('[data-view]').forEach(t=>{t.classList.toggle('active',t.dataset.view===view);t.setAttribute('aria-selected',t.dataset.view===view?'true':'false')});['travel','ops','share'].forEach(v=>qs('#view-'+v).classList.toggle('hide',v!==view));if(view==='share')makeQR();render();}
+function edge(a,b){return [a,b].sort().join('|')}
+function gridRoute(target){ // Schematic shortest-path search, NOT street-level directions
+ const cols=[110,220,330,440],ys=[60,118,176,234,292,350,408];
+ const nodes=cols.flatMap((x,c)=>ys.map((y,r)=>({id:c+','+r,c,r,x,y})));
+ const byId=new Map(nodes.map(n=>[n.id,n]));const blocked=new Set(state.incidents.filter(i=>i.status==='verified').flatMap(i=>i.block||[]));
+ const start='2,5';const end=target==='port'?'1,0':target==='herald'?'3,4':target==='penn'?'1,5':'3,1';
+ const distance=new Map([[start,0]]),prev=new Map(),open=new Set([start]);
+ while(open.size){const cur=[...open].sort((a,b)=>(distance.get(a)||0)-(distance.get(b)||0))[0];open.delete(cur);if(cur===end)break;const node=byId.get(cur);
+  for(const [dc,dr] of [[1,0],[-1,0],[0,1],[0,-1]]){const next=(node.c+dc)+','+(node.r+dr);if(!byId.has(next)||blocked.has(edge(cur,next)))continue;const nd=distance.get(cur)+1+(node.c!==byId.get(next).c ? 0.15 : 0);if(nd<(distance.get(next)??1e9)){distance.set(next,nd);prev.set(next,cur);open.add(next)}}
+ }
+ if(!distance.has(end))return[];const out=[end];while(out[0]!==start&&prev.has(out[0]))out.unshift(prev.get(out[0]));return out.map(n=>byId.get(n));
+}
+function incidentVisible(i){return i.status!=='resolved'&&(state.filter==='all'||(state.filter==='verified'&&i.status==='verified')||(state.filter==='community'&&i.origin!=='official-demo'))}
+function renderMap(){
+const route=gridRoute(state.destination);const path=route.map(n=>n.x+','+n.y).join(' ');const svg=qs('#route-layer');
+svg.innerHTML=path?'<polyline points="'+path+'" class="route-back"/><polyline points="'+path+'" class="route"/>':'';
+const active=state.incidents.filter(incidentVisible);qs('#incident-layer').innerHTML=active.map(i=>{const l=LOC[i.key]||LOC.w36,verified=i.status==='verified',fill=verified?'#c94f4b':i.status==='corroborated'?'#537eaa':'#ed9659';return '<g data-pin="'+i.id+'" tabindex="0" role="button" aria-label="Read incident '+escapeHTML(i.name)+'"><circle cx="'+l.x+'" cy="'+l.y+'" r="19" fill="'+fill+'" opacity=".16"/><circle cx="'+l.x+'" cy="'+l.y+'" r="11" fill="'+fill+'" stroke="#fff" stroke-width="3"/><text x="'+l.x+'" y="'+(l.y+4)+'" fill="#fff" text-anchor="middle" font-size="12" font-weight="900">'+(verified?'×':'!')+'</text></g>'}).join('');
+const d=DEST[state.destination];qs('#destination-layer').innerHTML='<circle cx="330" cy="350" r="12" fill="#122a27" stroke="white" stroke-width="4"/><text x="345" y="373" font-size="10" font-weight="850" fill="#234338">MSG · Start</text><circle cx="'+d.x+'" cy="'+d.y+'" r="11" fill="#438e5f" stroke="white" stroke-width="3"/><circle cx="'+d.x+'" cy="'+d.y+'" r="3" fill="#fff"/>';
+const confirmed=state.incidents.filter(i=>i.status==='verified'),risk=state.destination==='herald'?confirmed.some(i=>i.key==='w34')?'ELEVATED':'WATCH':state.destination==='penn'?state.incidents.some(i=>i.key==='w32'&&i.status!=='resolved')?'WATCH':'LOW':state.destination==='port'?confirmed.some(i=>i.key==='w38')?'ELEVATED':'WATCH':'WATCH';
+qs('#risk-stat').textContent=risk;qs('#risk-stat').style.color=risk==='ELEVATED'?'#bb5548':risk==='WATCH'?'#be8555':'#31865b';
+qs('#next-stat').textContent=risk==='ELEVATED'?'Review restrictions':'Check transit access';
+qs('#route-advice').innerHTML='<div class="kicker">ILLUSTRATIVE JOURNEY ADVISORY</div><strong>'+escapeHTML(d.name)+'</strong><p>'+escapeHTML(d.desc)+'</p><p><b>'+confirmed.length+' fictional confirmed restriction'+(confirmed.length===1?'':'s')+'</b> in the scenario. The green path is a schematic graph demonstration, not navigable streets or verified safe directions.</p>';
+if(gmap)drawGoogleMarkers();
+}
+function renderIncidents(){const showing=state.incidents.filter(incidentVisible);qs('#feed-count').textContent=showing.length+' active scenario reports';qs('#incident-list').innerHTML=showing.map(i=>'<button class="incident '+(state.active===i.id?'selected':'')+'" data-incident="'+i.id+'"><div class="inc-top"><span class="severity '+i.status+'">'+(i.status==='verified'?'◉ OFFICIAL · DEMO':i.status==='corroborated'?'◉ CORROBORATED':'○ UNVERIFIED')+'</span><span style="color:#a5b0a4;font-size:9px">'+escapeHTML(i.age)+'</span></div><h3>'+escapeHTML(i.name)+'</h3><p>'+escapeHTML(LOC[i.key]?.label||i.key)+'</p></button>').join('')||'<div style="font-size:12px;color:#819185">No reports in this filter.</div>';
+const i=state.incidents.find(i=>i.id===state.active),el=qs('#incident-detail');if(!i||!incidentVisible(i)){el.textContent='Select a report to inspect the source and verification history.';return}
+el.innerHTML='<b>'+escapeHTML(i.name)+'</b><p style="margin:7px 0">'+escapeHTML(i.detail)+'</p><div class="source-line"><span><b>Evidence:</b> '+escapeHTML(i.source)+'</span><button class="action sm" data-copy-incident="'+i.id+'">Share ↗</button></div><div style="margin-top:7px;font-size:10px"><b>Status:</b> '+(i.status==='verified'?'Fictional official restriction':i.status==='corroborated'?'Independently reported in simulation':'Not confirmed')+'</div>';
+}
+function renderOps(){const unresolved=state.incidents.filter(i=>i.status!=='resolved');qs('#ops-stats').innerHTML=[['Active reports',unresolved.length],['Official (mock)',unresolved.filter(i=>i.status==='verified').length],['Corroborated',unresolved.filter(i=>i.status==='corroborated').length],['Unverified',unresolved.filter(i=>i.status==='unverified').length]].map(v=>'<div><b>'+v[1]+'</b><small>'+v[0]+'</small></div>').join('');
+qs('#ops-feed').innerHTML=state.incidents.map(i=>'<div class="ops-card"><span class="ops-dot">'+(i.status==='verified'?'✓':'!')+'</span><div style="flex:1;min-width:0"><h3>'+escapeHTML(i.name)+' <span class="severity '+i.status+'">'+i.status+'</span></h3><p>'+escapeHTML(i.source)+' · '+escapeHTML(i.age)+'</p><p>'+escapeHTML(i.detail)+'</p><div class="ops-actions">'+(i.status==='unverified'?'<button class="action sm" data-action="corroborate" data-id="'+i.id+'">Simulate 2nd report</button>':'')+(i.status!=='resolved'?'<button class="action sm" data-action="resolve" data-id="'+i.id+'">Mark resolved (demo)</button>':'<button class="action sm" data-action="restore" data-id="'+i.id+'">Reopen report</button>')+'</div></div></div>').join('');}
+function render(){renderMap();renderIncidents();renderOps();}
+function pushClosure(){if(state.newClosure){toast('Second sample closure already injected. Use Reset to replay.');return}state.newClosure=true;state.lastReroute=true;state.incidents.push({id:'trigger1',name:'New pedestrian closure: W 38th at 7th Ave',key:'w38',kind:'closure',source:'New fictional city-alert feed item — simulated for demonstration',origin:'official-demo',status:'verified',detail:'Demo alert: the northbound passage at 7th Avenue is affected. The illustrative path graph will adapt, but real-world routing must be independently checked.',block:['2,2|2,3'],age:'Scenario · just now'});qs('#alert-box').innerHTML='<span style="color:#b45745;font-size:19px">⚠</span><span><b>New demo alert detected.</b> W 38th / 7th Ave now flagged. Advisory recalculated; live Google Maps does not automatically ingest it.</span>';qs('#alert-box').style.background='#fff0e8';qs('#alert-box').style.color='#9b4f3f';persist();render();toast('New simulated closure added. Advisory updated.');}
+function reset(){state.incidents=structuredClone(initial);state.newClosure=false;state.lastReroute=false;state.active='i1';qs('#alert-box').innerHTML='<span>◈</span><span>Demo monitoring active in this tab. There are no background push notifications or live feeds.</span>';qs('#alert-box').style.background='';qs('#alert-box').style.color='';persist();render();toast('Scenario reset');}
+function mapURL(){const d=DEST[state.destination];const params=new URLSearchParams({api:'1',origin:'Madison Square Garden, New York, NY',destination:d.address,travelmode:state.mode});return 'https://www.google.com/maps/dir/?'+params.toString()}
+function appURL(){const url=new URL(window.location.href);url.hash='';url.searchParams.set('event','knicks');return url.toString()}
+async function copyText(s){try{await navigator.clipboard.writeText(s);toast('Link copied')}catch(e){const el=document.createElement('textarea');el.value=s;document.body.append(el);el.select();try{document.execCommand('copy');toast('Link copied')}catch(err){toast('Select the visible link to copy')}el.remove()}}
+function shareURL(url,subject){if(navigator.share&&/^https?:/.test(url)){navigator.share({title:subject,url}).catch(()=>{})}else copyText(url)}
+function makeQR(){const url=appURL();qs('#share-url').value=url;const hosted=location.protocol==='https:'&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1';qs('#hosted-warning').classList.toggle('hide',hosted);const qr=qs('#qr-code');if(!hosted){qr.innerHTML='<div style="font-weight:850;color:#768678;text-align:center;font-size:11px;line-height:1.6">QR available<br>when hosted</div>';return}try{const model=new QRCodeModel(-1,0);model.addData(url);model.make();const n=model.getModuleCount();let squares='';for(let y=0;y<n;y++)for(let x=0;x<n;x++)if(model.isDark(y,x))squares+='<rect x="'+x+'" y="'+y+'" width="1" height="1"/>';qr.innerHTML='<svg viewBox="-3 -3 '+(n+6)+' '+(n+6)+'" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><rect x="-3" y="-3" width="'+(n+6)+'" height="'+(n+6)+'" fill="white"/><g fill="#153a31">'+squares+'</g></svg>'}catch(e){qr.textContent='Use link';console.warn('QR unavailable',e)}}
+let gmap=null,mapItems=[];function drawGoogleMarkers(){if(!gmap||!window.google?.maps)return;mapItems.forEach(x=>x.setMap(null));mapItems=[];const add=(pos,label,color,sz=7)=>{const circle=new google.maps.Circle({map:gmap,center:pos,radius:sz===7?58:85,strokeColor:color,strokeOpacity:.9,strokeWeight:2,fillColor:color,fillOpacity:.28,clickable:true});mapItems.push(circle);return circle};
+add({lat:40.7505,lng:-73.9934},'MSG','#133b31');const d=LOC[state.destination];add({lat:d.lat,lng:d.lng},d.label,'#338756');state.incidents.filter(incidentVisible).forEach(i=>{const l=LOC[i.key]||LOC.w36,c=add({lat:l.lat,lng:l.lng},i.name,i.status==='verified'?'#c64e47':'#e79750',10);c.addListener('click',()=>{state.active=i.id;renderIncidents()})});}
+window.initRallyGoogle=function(){try{gmap=new google.maps.Map(qs('#gmap'),{center:{lat:40.752,lng:-73.9918},zoom:15,disableDefaultUI:true,zoomControl:true,streetViewControl:false,styles:[{featureType:'poi',stylers:[{visibility:'off'}]}]});qs('#gmap').classList.add('show');qs('#mapstatus').textContent='◉ Google Maps base';qs('#watermark').textContent='Google map · Demo incidents · Not navigation';drawGoogleMarkers();toast('Google Maps base map connected')}catch(e){toast('Could not load Google Maps')}};
+function connectMaps(){const key=prompt('Enter a Google Maps JavaScript API key (used only for this browser session). Requires enabled API and authorized referrer. Cancel to keep schematic map.');if(!key)return;const s=document.createElement('script');s.async=true;s.defer=true;s.src='https://maps.googleapis.com/maps/api/js?key='+encodeURIComponent(key.trim())+'&callback=initRallyGoogle&loading=async';s.onerror=()=>toast('Google Maps failed to load. Check key and browser restrictions.');document.head.appendChild(s)}
+qsa('[data-view]').forEach(x=>x.addEventListener('click',()=>go(x.dataset.view)));
+qsa('[data-filter]').forEach(x=>x.addEventListener('click',()=>{state.filter=x.dataset.filter;qsa('[data-filter]').forEach(v=>v.classList.toggle('active',v===x));renderMap();renderIncidents()}));
+qsa('[data-mode]').forEach(x=>x.addEventListener('click',()=>{state.mode=x.dataset.mode;qsa('[data-mode]').forEach(v=>v.classList.toggle('active',v===x));persist();renderMap()}));
+qs('#destination').addEventListener('change',e=>{state.destination=e.target.value;persist();renderMap()});
+qs('#open-maps').addEventListener('click',()=>window.open(mapURL(),'_blank','noopener,noreferrer'));
+qs('#simulate-new').addEventListener('click',pushClosure);qs('#ops-disruption').addEventListener('click',pushClosure);qs('#ops-reset').addEventListener('click',reset);qs('#map-connect').addEventListener('click',connectMaps);
+qs('#share-top').addEventListener('click',()=>{go('share');shareURL(appURL(),'RallyRoute – Knicks event advisory demo')});qs('#copy-link').addEventListener('click',()=>copyText(qs('#share-url').value));qs('#print-poster').addEventListener('click',()=>{if(!(location.protocol==='https:'&&location.hostname!=='localhost'))toast('Deploy first so the QR works from another phone');window.print()});
+qs('#ops-export').addEventListener('click',()=>{const b=new Blob([JSON.stringify({disclaimer:'Simulated data only',incidents:state.incidents},null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='rallyroute-demo-incidents.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)});
+qs('#report-form').addEventListener('submit',e=>{e.preventDefault();const loc=qs('#rep-location').value,type=qs('#rep-type').value,detail=qs('#rep-detail').value.trim();if(detail.length<8){toast('Please provide a specific observation');return}const report={id:'r'+Date.now(),name:type+' reported near '+LOC[loc].label,key:loc,kind:'report',source:'Visitor-submitted in this browser session — not independently verified',origin:'community',status:'unverified',detail,block:[],age:'Scenario · just now'};state.incidents.unshift(report);state.active=report.id;qs('#rep-detail').value='';qs('#report-confirm').style.display='block';qs('#report-confirm').textContent='Report received locally as UNVERIFIED. It does not close a road or alert anyone else.';persist();render();toast('Unverified report recorded')});
+qs('#street-svg').addEventListener('click',e=>{const n=e.target.closest('[data-pin]');if(n){state.active=n.dataset.pin;renderIncidents()}});qs('#street-svg').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){const n=e.target.closest('[data-pin]');if(n){e.preventDefault();state.active=n.dataset.pin;renderIncidents()}}});
+qs('#incident-list').addEventListener('click',e=>{const b=e.target.closest('[data-incident]');if(b){state.active=b.dataset.incident;renderIncidents()}});
+qs('#incident-detail').addEventListener('click',e=>{const b=e.target.closest('[data-copy-incident]');if(b){const u=new URL(appURL());u.hash='incident='+encodeURIComponent(b.dataset.copyIncident);shareURL(u.toString(),'RallyRoute simulated incident')}});
+qs('#ops-feed').addEventListener('click',e=>{const b=e.target.closest('[data-action]');if(!b)return;const i=state.incidents.find(i=>i.id===b.dataset.id);if(!i)return;if(b.dataset.action==='corroborate'){i.status='corroborated';i.source+=' · Second independent SIMULATED eyewitness';i.detail+=' Second fictional report received; still not officially confirmed.'}else if(b.dataset.action==='resolve')i.status='resolved';else if(b.dataset.action==='restore')i.status=i.origin==='official-demo'?'verified':'unverified';persist();render()});
+qsa('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
+if(location.hash.startsWith('#incident=')){const id=decodeURIComponent(location.hash.slice(10));if(state.incidents.some(i=>i.id===id))state.active=id;}
+qs('#destination').value=state.destination;qsa('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===state.mode));render();
+window.__RALLY_TEST__={gridRoute,edge,reset,pushClosure,state,mapURL,appURL,report:()=>state.incidents};
+})();
+</script>
+</body></html>
