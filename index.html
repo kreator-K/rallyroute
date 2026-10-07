@@ -30,7 +30,7 @@
 <section id="view-travel">
 <div class="app-grid">
 <div>
- <div class="panel"><div class="map-toolbar"><div class="section-hd"><h2>What's happening around you</h2><span class="mini-tag" id="mapstatus">◉ Schematic map</span></div><div class="controlrow"><div class="filtergroup"><button data-filter="all" class="active">All reports</button><button data-filter="verified">Official only</button><button data-filter="community">Community</button></div><button class="mapswitch" id="map-connect">⚙ Connect Google Maps</button></div></div>
+ <div class="panel"><div class="map-toolbar"><div class="section-hd"><h2>What's happening around you</h2><span class="mini-tag" id="mapstatus">◉ Schematic map</span></div><div class="controlrow"><div class="filtergroup"><button data-filter="all" class="active">All reports</button><button data-filter="verified">Official only</button><button data-filter="community">Community</button></div><span style="display:flex;align-items:center;gap:11px;flex-wrap:wrap"><a class="mapswitch" href="https://developers.google.com/maps/documentation/javascript/demo-key" target="_blank" rel="noopener noreferrer" style="text-decoration:underline;text-underline-offset:3px">Get a free demo key ↗</a><button class="mapswitch" id="map-connect">⚙ Connect Google Maps</button></span></div></div>
  <div class="map-wrap" id="map-wrap"><svg class="map-graphic" viewBox="0 0 620 460" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Schematic map of Midtown Manhattan with hypothetical incidents and a route simulation" id="street-svg">
  <rect width="620" height="460" fill="#ecf1e9"/>
  <rect class="park" x="475" y="15" width="115" height="72" rx="11"/><text x="486" y="49" font-size="11" fill="#74997b" font-weight="800">BRYANT PARK</text>
@@ -698,6 +698,7 @@ var QRUtil = {
             }
 
         } else if (type < 27) {
+
             // 10 - 26
 
             switch(mode) {
@@ -716,8 +717,7 @@ var QRUtil = {
             switch(mode) {
             case QRMode.MODE_NUMBER     : return 14;
             case QRMode.MODE_ALPHA_NUM  : return 13;
-            case QRMode.MODE_8BIT_BYTE  : return 16;
-            case QRMode.MODE_KANJI      : return 12;
+            case QRMode.MODE_8BIT_BYTE  : return 16;            case QRMode.MODE_KANJI      : return 12;
             default :
                 throw new Error("mode:" + mode);
             }
@@ -1363,7 +1363,7 @@ function makeQR(){const url=appURL();qs('#share-url').value=url;const hosted=loc
 let gmap=null,mapItems=[];function drawGoogleMarkers(){if(!gmap||!window.google?.maps)return;mapItems.forEach(x=>x.setMap(null));mapItems=[];const add=(pos,label,color,sz=7)=>{const circle=new google.maps.Circle({map:gmap,center:pos,radius:sz===7?58:85,strokeColor:color,strokeOpacity:.9,strokeWeight:2,fillColor:color,fillOpacity:.28,clickable:true});mapItems.push(circle);return circle};
 add({lat:40.7505,lng:-73.9934},'MSG','#133b31');const d=LOC[state.destination];add({lat:d.lat,lng:d.lng},d.label,'#338756');state.incidents.filter(incidentVisible).forEach(i=>{const l=LOC[i.key]||LOC.w36,c=add({lat:l.lat,lng:l.lng},i.name,i.status==='verified'?'#c64e47':'#e79750',10);c.addListener('click',()=>{state.active=i.id;renderIncidents()})});}
 window.initRallyGoogle=function(){try{gmap=new google.maps.Map(qs('#gmap'),{center:{lat:40.752,lng:-73.9918},zoom:15,disableDefaultUI:true,zoomControl:true,streetViewControl:false,styles:[{featureType:'poi',stylers:[{visibility:'off'}]}]});qs('#gmap').classList.add('show');qs('#mapstatus').textContent='◉ Google Maps base';qs('#watermark').textContent='Google map · Demo incidents · Not navigation';drawGoogleMarkers();toast('Google Maps base map connected')}catch(e){toast('Could not load Google Maps')}};
-function connectMaps(){const key=prompt('Enter a Google Maps JavaScript API key (used only for this browser session). Requires enabled API and authorized referrer. Cancel to keep schematic map.');if(!key)return;const s=document.createElement('script');s.async=true;s.defer=true;s.src='https://maps.googleapis.com/maps/api/js?key='+encodeURIComponent(key.trim())+'&callback=initRallyGoogle&loading=async';s.onerror=()=>toast('Google Maps failed to load. Check key and browser restrictions.');document.head.appendChild(s)}
+function connectMaps(){const key=prompt('Paste your Google Maps Demo Key (free for prototyping) or standard Maps JavaScript API key. If you do not have one, click Get a free demo key beside this button. The key is used only for this browser session. Cancel to keep the schematic map.');if(!key)return;const s=document.createElement('script');s.async=true;s.defer=true;s.src='https://maps.googleapis.com/maps/api/js?key='+encodeURIComponent(key.trim())+'&callback=initRallyGoogle&loading=async';s.onerror=()=>toast('Google Maps failed to load. Check key and browser restrictions.');document.head.appendChild(s)}
 qsa('[data-view]').forEach(x=>x.addEventListener('click',()=>go(x.dataset.view)));
 qsa('[data-filter]').forEach(x=>x.addEventListener('click',()=>{state.filter=x.dataset.filter;qsa('[data-filter]').forEach(v=>v.classList.toggle('active',v===x));renderMap();renderIncidents()}));
 qsa('[data-mode]').forEach(x=>x.addEventListener('click',()=>{state.mode=x.dataset.mode;qsa('[data-mode]').forEach(v=>v.classList.toggle('active',v===x));persist();renderMap()}));
