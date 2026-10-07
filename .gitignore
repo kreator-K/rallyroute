@@ -1,0 +1,24 @@
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# Python / tests
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Local config / secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Temporary artefacts
+*.log
+*.tmp
