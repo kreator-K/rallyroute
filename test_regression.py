@@ -40,7 +40,7 @@ with sync_playwright() as p:
     page.locator('[data-tab="watch"]').click()
     check("City watch view opens", page.locator("#watch-view").is_visible())
     check("All 19 official schedule entries render", page.locator("#closure-list .closure").count() == 19)
-    check("Official city notice linked", "thanksgiving-standard-street-closures-2026.pdf" in page.locator("#watch-view").inner_text())
+    check("Official city notice linked", "thanksgiving-standard-street-closures-2026.pdf" in page.locator("#watch-view a").get_attribute("href"))
 
     page.locator("#report-area").select_option(label="Sixth Avenue")
     page.locator("#report-detail").fill("Crowds are building near the corner")
