@@ -121,7 +121,21 @@ if(p.priority==='crowds')advice+=' Your crowd-avoidance preference is active: fa
 if(p.priority==='fastest')advice+=' Your priority is the fastest practical journey: compare current transit and walking options, but do not trade away official safety restrictions.';
 if(p.priority==='accessible'||p.stepfree)advice+=' Accessibility preference is active: use only step-free entrances confirmed by MTA; this demo cannot verify live elevator outages.';
 if(p.priority==='walk')advice+=' Your walking limit is '+p.walk+' minutes; prefer a closer accessible station or pickup point if the full walk exceeds that limit.';
-if(changed)advice='A new disruption signal may affect the approach you selected. '+advice;
+const dt=new Date(p.departure);
+if(!isNaN(dt.getTime())){
+ const day=dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0');
+ const mins=dt.getHours()*60+dt.getMinutes();
+ if(day==='2026-11-26'&&mins>=60&&mins<1200)advice+=' Your selected departure falls during the City-published parade-day restriction windows; allow extra time and avoid entering the event footprint.';
+ else if(day==='2026-11-25'&&mins>=120)advice+=' Your selected departure overlaps the published balloon-inflation and parade setup restrictions on the Upper West Side; check the relevant closure times before leaving.';
+}
+if(changed){
+ let adjustment='';
+ if(p.mode==='transit')adjustment='Suggested adaptation: avoid the 59th Street approach flagged by the new crowd signal. Re-check MTA station entrances and choose an approach outside the parade footprint; keep your step-free requirement active if selected.';
+ else if(p.mode==='driving')adjustment='Suggested adaptation: keep the vehicle outside the 59th Street / Sixth Avenue event perimeter and approach your destination from the opposite side, following NYPD traffic controls.';
+ else if(p.mode==='walking')adjustment='Suggested adaptation: shift your approach away from the 59th Street crowd signal and use a parallel avenue; do not cross the parade route to save distance.';
+ else adjustment='Suggested adaptation: use a parallel corridor outside the crowd signal and dismount wherever event staff direct.';
+ advice=adjustment+' '+advice;
+}
 return advice;
 }
 function renderPlan(){
